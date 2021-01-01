@@ -16,3 +16,20 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::get('teacher/{teacherId}', 'TeacherController@findOne');
+Route::post('teacher/create', 'TeacherController@create');
+Route::put('teacher/update', 'TeacherController@update');
+Route::delete('teacher/{teacherId}', 'TeacherController@delete');
+
+Route::get('student/{studentId}', 'StudentController@findOne');
+Route::post('student/create', 'StudentController@create');
+Route::put('student/update/{studentId}', 'StudentController@update');
+Route::delete('student/{studentId}', 'StudentController@delete');
+
+Route::get('lesson/{lessonId}', 'LessonController@findOne');
+Route::get('lesson/{lessonId}/students', 'LessonController@getStudentList');
+Route::post('lesson/create', 'LessonController@create');
+Route::put('lesson/update/{lessonId}', 'LessonController@update');
+Route::delete('lesson/{lessonId}', 'LessonController@delete');
