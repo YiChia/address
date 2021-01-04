@@ -9,7 +9,9 @@
 namespace App\Repository;
 
 use App\Lesson;
+use App\LessonStudents;
 use App\Library\Tool;
+use App\Services\LessonService;
 use App\User;
 use Illuminate\Support\Facades\DB;
 
@@ -61,6 +63,51 @@ class LessonRepository
             ->where('users.softDelete', 0)
             ->where('users.type', User::TYPE_STUDENT)
             ->get();
+    }
+
+    public function changeTeacher(int $lessonId, int $teacherId)
+    {
+        return Lesson::where('id', $lessonId)
+            ->update(['teacherId' => $teacherId]);
+    }
+
+    public function setTeacherAssistant(int $lessonId, int $studentId)
+    {
+        //確認該名學生有修此堂課
+        $model = LessonStudents::where('lessonId', $lessonId)
+                ->where('studentId', $studentId)
+                ->update(['type' => LessonStudents::TEACHER_ASSISTANT]);
+        if ($model == 0) {
+            throw new \Exception('該名學生不在此課堂內');
+        }
+    }
+
+    public function findTeacherAssistant(int $lessonId)
+    {
+        return LessonStudents::where('lessonId', $lessonId)
+            ->where('type', LessonStudents::TEACHER_ASSISTANT)
+            ->first();
+    }
+
+    public function selectLesson(int $lessonId, int $studentId)
+    {
+        return LessonStudents::firstOrNew([
+            'lessonId' => $lessonId,
+            'studentId' => $studentId
+        ]);
+    }
+
+    public function withdraw(int $lessonId, int $studentId)
+    {
+        return LessonStudents::where('lessonId', $lessonId)
+                ->where('studentId', $studentId)
+                ->delete();
+    }
+
+    public function withdrawAllStudents(int $lessonId)
+    {
+        return LessonStudents::where('lessonId', $lessonId)
+            ->delete();
     }
 
 }

@@ -57,4 +57,46 @@ class LessonController extends Controller
             return $this->responseData(101, '取得該課程學生列表失敗:'. $e->getMessage());
         }
     }
+
+    public function changeTeacher(Request $request, int $lessonId)
+    {
+        try {
+            $this->service->changeTeacher($lessonId, $request->post('teacherId'));
+            return $this->responseData(200, '設定該課程老師成功');
+        } catch (\Exception $e) {
+            return $this->responseData(101, '設定該課程老師失敗:'. $e->getMessage());
+        }
+    }
+
+    public function setTeacherAssistant(Request $request, int $lessonId)
+    {
+        try {
+            $this->service->setTeacherAssistant($lessonId, $request->post('studentId'));
+            return $this->responseData(200, '設定課程助教成功');
+        } catch (\Exception $e) {
+            return $this->responseData(101, '取得課程助教失敗:'. $e->getMessage());
+        }
+    }
+
+    public function selectLesson(Request $request)
+    {
+        try {
+            $this->service->selectLesson($request->post('lessonId'), $request->post('studentId'));
+            return $this->responseData(200, '選課成功');
+        } catch (\Exception $e) {
+            return $this->responseData(101, '選課失敗:'. $e->getMessage());
+        }
+
+    }
+
+    public function withdraw(Request $request)
+    {
+        try {
+            $this->service->withdraw($request->post('lessonId'), $request->post('studentId'));
+            return $this->responseData(200, '已取消選課');
+        } catch (\Exception $e) {
+            return $this->responseData(101, '取消選課失敗:'. $e->getMessage());
+        }
+    }
+
 }

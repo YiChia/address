@@ -33,3 +33,10 @@ Route::get('lesson/{lessonId}/students', 'LessonController@getStudentList');
 Route::post('lesson/create', 'LessonController@create');
 Route::put('lesson/update/{lessonId}', 'LessonController@update');
 Route::delete('lesson/{lessonId}', 'LessonController@delete');
+
+Route::put('select/lesson/', 'LessonController@selectLesson');
+Route::put('withdraw/lesson/', 'LessonController@withdraw');
+
+
+Route::put('lesson/{lessonId}/teacher', 'LessonController@changeTeacher');
+Route::put('set/teacherAssistant/{lessonId}', 'LessonController@setTeacherAssistant');
